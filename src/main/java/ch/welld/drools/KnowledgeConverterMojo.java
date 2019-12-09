@@ -17,7 +17,7 @@ import static ch.welld.drools.FileUtils.getAllFilesWithExtension;
 /**
  * Goal which touches a timestamp file.
  */
-@Mojo( name = "convert-knowledge", defaultPhase = LifecyclePhase.PACKAGE )
+@Mojo( name = "convert-knowledge", defaultPhase = LifecyclePhase.GENERATE_RESOURCES )
 public class KnowledgeConverterMojo extends AbstractMojo {
     /**
      * Location of the file.
