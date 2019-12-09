@@ -21,18 +21,6 @@ public class DroolsConverter {
         return GuidedDTDRLPersistence.getInstance().marshal( model );
     }
 
-    public static File copyKnowledge(File sourceFile, File outputDirectory, String basePath, boolean overrideFiles) throws IOException {
-        String ext = sourceFile.getName().substring(sourceFile.getName().lastIndexOf("."));
-        switch (ext) {
-            case ".gdst":
-                return convertGdst(sourceFile, outputDirectory, basePath, overrideFiles);
-            case ".drl":
-                return copyFile(sourceFile, new File(outputDirectory, getRelativePath(sourceFile.getAbsolutePath(), basePath)), overrideFiles);
-            default:
-                throw new IOException("Cannot convert file with extension " + ext);
-        }
-    }
-
     private static File convertGdst(File sourceFile, File outputDirectory, String basePath, boolean overrideFiles) throws IOException {
         String drlString = convertGdstFileToDrlString(sourceFile);
         String relativePath = getRelativePath(sourceFile.getAbsolutePath(), basePath);
@@ -47,4 +35,15 @@ public class DroolsConverter {
         return targetFile;
     }
 
+    public static File copyKnowledge(File sourceFile, File outputDirectory, String basePath, boolean overrideFiles) throws IOException {
+        String ext = sourceFile.getName().substring(sourceFile.getName().lastIndexOf("."));
+        switch (ext) {
+            case ".gdst":
+                return convertGdst(sourceFile, outputDirectory, basePath, overrideFiles);
+            case ".drl":
+                return copyFile(sourceFile, new File(outputDirectory, getRelativePath(sourceFile.getAbsolutePath(), basePath)), overrideFiles);
+            default:
+                throw new IOException("Cannot convert file with extension " + ext);
+        }
+    }
 }

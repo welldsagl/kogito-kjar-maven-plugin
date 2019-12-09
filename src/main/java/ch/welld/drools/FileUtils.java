@@ -2,9 +2,10 @@ package ch.welld.drools;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.CopyOption;
 import java.nio.file.Files;
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -19,7 +20,7 @@ public class FileUtils {
     }
 
     public static List<File> getAllFilesWithExtension(File directory, List<String> extensions) {
-        return Arrays.stream(directory.listFiles())
+        return Arrays.stream(Objects.requireNonNull(directory.listFiles()))
                 .flatMap(file -> {
                     if (file.isFile() && extensions.stream().anyMatch(ext -> file.getName().endsWith(ext))) {
                         return Stream.of(file);
