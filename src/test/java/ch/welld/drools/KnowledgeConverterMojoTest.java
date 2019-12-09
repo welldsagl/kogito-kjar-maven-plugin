@@ -9,7 +9,7 @@ import java.io.File;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-public class GdstConverterMojoTest {
+public class KnowledgeConverterMojoTest {
 
     @Rule
     public MojoRule rule = new MojoRule() {
@@ -31,8 +31,8 @@ public class GdstConverterMojoTest {
         assertNotNull( pom );
         assertTrue( pom.exists() );
 
-        GdstConverterMojo gdstConverterMojo = ( GdstConverterMojo ) rule.lookupConfiguredMojo( pom, "convert-gdst" );
-        assertNotNull( gdstConverterMojo );
+        KnowledgeConverterMojo knowledgeConverterMojo = (KnowledgeConverterMojo) rule.lookupConfiguredMojo( pom, "convert-knowledge" );
+        assertNotNull(knowledgeConverterMojo);
     }
 
     /**
@@ -46,15 +46,15 @@ public class GdstConverterMojoTest {
         assertNotNull( pom );
         assertTrue( pom.exists() );
 
-        GdstConverterMojo gdstConverterMojo = ( GdstConverterMojo ) rule.lookupConfiguredMojo( pom, "convert-gdst" );
-        assertNotNull( gdstConverterMojo );
-        gdstConverterMojo.execute();
+        KnowledgeConverterMojo knowledgeConverterMojo = (KnowledgeConverterMojo) rule.lookupConfiguredMojo( pom, "convert-knowledge" );
+        assertNotNull(knowledgeConverterMojo);
+        knowledgeConverterMojo.execute();
 
-        File inputDirectory = ( File ) rule.getVariableValueFromObject( gdstConverterMojo, "inputDirectory" );
+        File inputDirectory = ( File ) rule.getVariableValueFromObject(knowledgeConverterMojo, "inputDirectory" );
         assertNotNull( inputDirectory );
         assertTrue( inputDirectory.exists() );
 
-        File outputDirectory = ( File ) rule.getVariableValueFromObject( gdstConverterMojo, "outputDirectory" );
+        File outputDirectory = ( File ) rule.getVariableValueFromObject(knowledgeConverterMojo, "outputDirectory" );
         assertNotNull( outputDirectory );
         assertTrue( outputDirectory.exists() );
 

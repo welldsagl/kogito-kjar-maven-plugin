@@ -18,10 +18,8 @@ import static ch.welld.drools.FileUtils.getAllFilesWithExtension;
 /**
  * Goal which touches a timestamp file.
  */
-@Mojo( name = "convert-gdst", defaultPhase = LifecyclePhase.PACKAGE )
-public class GdstConverterMojo
-    extends AbstractMojo
-{
+@Mojo( name = "convert-knowledge", defaultPhase = LifecyclePhase.PACKAGE )
+public class KnowledgeConverterMojo extends AbstractMojo {
     /**
      * Location of the file.
      */
@@ -41,21 +39,19 @@ public class GdstConverterMojo
         getLog().info("--- ---------- ---");
     }
 
-    public void execute()
-        throws MojoExecutionException
-    {
+    public void execute() throws MojoExecutionException {
         logParameters();
 
         /* Create the output directory if it does not exist */
         createDirectoryIfNotExists(outputDirectory);
 
-        /* Get all gdst files in input directory */
+        /* Get all knowledge files in input directory */
         List<File> knowledgeFiles = getAllFilesWithExtension(inputDirectory, Arrays.asList(".gdst", ".drl"));
 
         getLog().info("Knowledge files found: " + knowledgeFiles.size());
         knowledgeFiles.forEach(knowledgeFile -> getLog().info(" - " + knowledgeFile.getPath()));
 
-        /* Convert all found gdst files into drl files */
+        /* Convert all found knowledge files into drl files */
         knowledgeFiles.forEach(sourceFile -> {
             try {
                 getLog().info("Copying file " + sourceFile.getPath());
