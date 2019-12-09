@@ -9,8 +9,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-import static ch.welld.drools.FileUtils.createDirectoryIfNotExists;
-import static ch.welld.drools.FileUtils.getRelativePath;
+import static ch.welld.drools.FileUtils.*;
 
 public class DroolsConverter {
 
@@ -22,18 +21,29 @@ public class DroolsConverter {
         return GuidedDTDRLPersistence.getInstance().marshal( model );
     }
 
-    public static File convertGdst(File sourceFile, File outputDirectory, String basePath, boolean deleteInputFiles) throws IOException {
+    public static File copyKnowledge(File sourceFile, File outputDirectory, String basePath, boolean overrideFiles) throws IOException {
+        String ext = sourceFile.getName().substring(sourceFile.getName().lastIndexOf("."));
+        switch (ext) {
+            case ".gdst":
+                return convertGdst(sourceFile, outputDirectory, basePath, overrideFiles);
+            case ".drl":
+                return copyFile(sourceFile, new File(outputDirectory, getRelativePath(sourceFile.getAbsolutePath(), basePath)), overrideFiles);
+            default:
+                throw new IOException("Cannot convert file with extension " + ext);
+        }
+    }
+
+    private static File convertGdst(File sourceFile, File outputDirectory, String basePath, boolean overrideFiles) throws IOException {
         String drlString = convertGdstFileToDrlString(sourceFile);
         String relativePath = getRelativePath(sourceFile.getAbsolutePath(), basePath);
 
         File fullOutputDirectory = new File(outputDirectory, relativePath);
         createDirectoryIfNotExists(fullOutputDirectory);
         File targetFile = new File( fullOutputDirectory, sourceFile.getName().replace(".gdst", ".drl") );
-        Files.write(Paths.get(targetFile.getPath()), drlString.getBytes());
-
-        if(deleteInputFiles) {
-            sourceFile.delete();
+        if(overrideFiles || !targetFile.exists()) {
+            Files.write(Paths.get(targetFile.getPath()), drlString.getBytes());
         }
+
         return targetFile;
     }
 

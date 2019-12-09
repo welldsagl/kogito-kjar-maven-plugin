@@ -16,8 +16,9 @@
         <groupId>ch.welld.drools</groupId>
         <artifactId>welld-drools-maven-plugin</artifactId>
         <configuration>
-          <outputDirectory>test-output-directory</outputDirectory>
+          <outputDirectory>output</outputDirectory>
           <inputDirectory>./</inputDirectory>
+          <overrideFiles>true</overrideFiles>
         </configuration>
       </plugin>
     </plugins>

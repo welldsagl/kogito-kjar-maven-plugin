@@ -1,17 +1,24 @@
 package ch.welld.drools;
 
-
+import org.apache.commons.io.FileUtils;
 import org.apache.maven.plugin.testing.MojoRule;
 import org.junit.Rule;
 import org.junit.Test;
 import java.io.File;
+
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 public class GdstConverterMojoTest {
 
     @Rule
-    public MojoRule rule = new MojoRule();
+    public MojoRule rule = new MojoRule() {
+        @Override
+        protected void before() throws Throwable {
+            File outputDirectory = new File("target/test-classes/project-to-test/output");
+            FileUtils.deleteDirectory(outputDirectory);
+        }
+    };
 
     /**
      * Test that the Mojo can be run

@@ -1,6 +1,5 @@
 package ch.welld.drools;
 
-
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
@@ -9,9 +8,10 @@ import org.apache.maven.plugins.annotations.Parameter;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
-import static ch.welld.drools.DroolsConverter.convertGdst;
+import static ch.welld.drools.DroolsConverter.copyKnowledge;
 import static ch.welld.drools.FileUtils.createDirectoryIfNotExists;
 import static ch.welld.drools.FileUtils.getAllFilesWithExtension;
 
@@ -31,8 +31,8 @@ public class GdstConverterMojo
     @Parameter( defaultValue = "${project.build.directory}", property = "inputDirectory", required = true )
     private File inputDirectory;
 
-    @Parameter( defaultValue = "false", property = "deleteInputFiles" )
-    private boolean deleteInputFiles;
+    @Parameter( defaultValue = "false", property = "overrideFiles" )
+    private boolean overrideFiles;
 
     private void logParameters() {
         getLog().info("--- PARAMETERS ---");
@@ -50,18 +50,20 @@ public class GdstConverterMojo
         createDirectoryIfNotExists(outputDirectory);
 
         /* Get all gdst files in input directory */
-        List<File> gdstFiles = getAllFilesWithExtension(inputDirectory, ".gdst");
+        List<File> knowledgeFiles = getAllFilesWithExtension(inputDirectory, Arrays.asList(".gdst", ".drl"));
 
-        getLog().info("GDST Files found: " + gdstFiles.size());
-        gdstFiles.forEach(gdstFile -> getLog().info(" - " + gdstFile.getName()));
+        getLog().info("Knowledge files found: " + knowledgeFiles.size());
+        knowledgeFiles.forEach(knowledgeFile -> getLog().info(" - " + knowledgeFile.getPath()));
 
         /* Convert all found gdst files into drl files */
-        gdstFiles.forEach(sourceFile -> {
-            try{
-                convertGdst(sourceFile, outputDirectory, inputDirectory.getPath(), deleteInputFiles);
-            }catch(IOException ex) {
+        knowledgeFiles.forEach(sourceFile -> {
+            try {
+                getLog().info("Copying file " + sourceFile.getPath());
+                copyKnowledge(sourceFile, outputDirectory, inputDirectory.getPath(), overrideFiles);
+            } catch(IOException ex) {
                 getLog().error("Cannot convert file " + sourceFile.getName());
             }
         });
+
     }
 }

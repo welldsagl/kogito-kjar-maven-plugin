@@ -1,0 +1,90 @@
+package ch.welld.schindler.fixture.droolsknowledge.components.buzzers;
+
+import ch.welld.schindler.fixture.droolsknowledge.materials.Material;
+
+//from row number: 1
+//basic
+rule "Row 1 DTBuzzers"
+	dialect "mvel"
+	when
+	then
+		Material f2 = new Material();
+		f2.setFamilyCode( "54412882" );
+		f2.setMaterialCode( "54413129" );
+		insert( f2 );
+end
+
+//from row number: 2
+//basic
+rule "Row 2 DTBuzzers"
+	dialect "mvel"
+	when
+	then
+		Material f2 = new Material();
+		f2.setFamilyCode( "54412882" );
+		f2.setMaterialCode( "54413124" );
+		insert( f2 );
+end
+
+//from row number: 3
+//basic
+rule "Row 3 DTBuzzers"
+	dialect "mvel"
+	when
+	then
+		Material f2 = new Material();
+		f2.setFamilyCode( "54412882" );
+		f2.setMaterialCode( "54413131" );
+		insert( f2 );
+end
+
+//from row number: 4
+//basic
+rule "Row 4 DTBuzzers"
+	dialect "mvel"
+	when
+	then
+		Material f2 = new Material();
+		f2.setFamilyCode( "54412882" );
+		f2.setMaterialCode( "54412624" );
+		insert( f2 );
+end
+
+//from row number: 5
+//basic
+rule "Row 5 DTBuzzers"
+	dialect "mvel"
+	when
+	then
+		Material f2 = new Material();
+		f2.setFamilyCode( "54412882" );
+		f2.setMaterialCode( "54412829" );
+		insert( f2 );
+end
+
+//from row number: 6
+//additional 1
+rule "Row 6 DTBuzzers"
+	dialect "mvel"
+	when
+		f1 : BuzzerConfiguration( buzzerType == "HAIRLINE" )
+	then
+		Material f2 = new Material();
+		f2.setFamilyCode( "54412882" );
+		f2.setMaterialCode( "54412883" );
+		insert( f2 );
+end
+
+//from row number: 7
+//additional 1
+rule "Row 7 DTBuzzers"
+	dialect "mvel"
+	when
+		f1 : BuzzerConfiguration( buzzerType == "MIRROR" )
+	then
+		Material f2 = new Material();
+		f2.setFamilyCode( "54412882" );
+		f2.setMaterialCode( "54412884" );
+		insert( f2 );
+end
+
