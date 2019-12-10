@@ -10,10 +10,9 @@
   <version>1.0-SNAPSHOT</version>
   <packaging>maven-plugin</packaging>
 
-  <name>welld-drools-maven-plugin Maven Plugin</name>
+  <name>WellD Drools Maven Plugin</name>
 
-  <!-- FIXME change it to the project's website -->
-  <url>http://www.example.com</url>
+  <url>https://github.com/welldsagl/drools-gdst-to-drl</url>
 
   <prerequisites>
     <maven>${maven.version}</maven>
