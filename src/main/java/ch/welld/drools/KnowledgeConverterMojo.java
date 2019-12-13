@@ -20,23 +20,33 @@ import org.apache.maven.plugins.annotations.Parameter;
  */
 @Mojo(name = "convert-knowledge", defaultPhase = LifecyclePhase.GENERATE_RESOURCES)
 public class KnowledgeConverterMojo extends AbstractMojo {
-    /**
-     * Location of the file.
-     */
     @Parameter(property = "outputDirectory", required = true)
     private File outputDirectory;
 
     @Parameter(property = "inputDirectory", required = true)
     private File inputDirectory;
 
-    @Parameter(defaultValue = "false", property = "overrideFiles")
-    private boolean overrideFiles;
+    @Parameter(defaultValue = "false", property = "overwriteFiles")
+    private boolean overwriteFiles;
 
     private void logParameters() {
         getLog().info("--- PARAMETERS ---");
         getLog().info("Output directory: " + outputDirectory);
         getLog().info("Input directory: " + inputDirectory);
         getLog().info("--- ---------- ---");
+    }
+
+    private void convertToDrlAndCopy(Path knowledgeFilePath, Path destinationPath, boolean overwriteFiles) {
+        try {
+            getLog().debug("Copying file " + knowledgeFilePath);
+            DroolsConverter.copyKnowledge(
+                    knowledgeFilePath.toFile(),
+                    destinationPath,
+                    overwriteFiles
+            );
+        } catch (IOException ex) {
+            getLog().error("Cannot convert file " + knowledgeFilePath.toString());
+        }
     }
 
     @Override
@@ -55,21 +65,16 @@ public class KnowledgeConverterMojo extends AbstractMojo {
 
             /* Convert all found knowledge files into drl files */
             knowledgeFiles.forEach(knowledgeFilePath -> {
-                try {
-                    getLog().debug("Copying file " + knowledgeFilePath);
-                    DroolsConverter.copyKnowledge(
-                            knowledgeFilePath.toFile(),
-                            outputDirectoryPath.resolve(
-                                inputDirectoryPath.relativize(knowledgeFilePath.getParent())
-                            ),
-                            overrideFiles
-                    );
-                } catch (IOException ex) {
-                    getLog().error("Cannot convert file " + knowledgeFilePath.toString());
-                }
+                convertToDrlAndCopy(
+                    knowledgeFilePath,
+                    outputDirectoryPath.resolve(
+                        inputDirectoryPath.relativize(knowledgeFilePath.getParent())
+                    ),
+                    overwriteFiles
+                );
             });
         } catch (IOException e) {
-            e.printStackTrace();
+            getLog().error(e);
         }
     }
 }

@@ -18,7 +18,7 @@
         <configuration>
           <outputDirectory>output</outputDirectory>
           <inputDirectory>./</inputDirectory>
-          <overrideFiles>true</overrideFiles>
+          <overwriteFiles>true</overwriteFiles>
         </configuration>
       </plugin>
     </plugins>
