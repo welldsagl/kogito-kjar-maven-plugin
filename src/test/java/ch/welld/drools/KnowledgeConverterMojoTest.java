@@ -24,14 +24,13 @@ public class KnowledgeConverterMojoTest {
      * Test that the Mojo can be run
      */
     @Test
-    public void testSetup()
-            throws Exception
-    {
-        File pom = new File( "target/test-classes/project-to-test/" );
-        assertNotNull( pom );
-        assertTrue( pom.exists() );
+    public void testSetup()  throws Exception {
+        File pom = new File("target/test-classes/project-to-test/");
+        assertNotNull(pom);
+        assertTrue(pom.exists());
 
-        KnowledgeConverterMojo knowledgeConverterMojo = (KnowledgeConverterMojo) rule.lookupConfiguredMojo( pom, "convert-knowledge" );
+        KnowledgeConverterMojo knowledgeConverterMojo =
+                (KnowledgeConverterMojo) rule.lookupConfiguredMojo(pom, "convert-knowledge");
         assertNotNull(knowledgeConverterMojo);
     }
 
@@ -39,27 +38,24 @@ public class KnowledgeConverterMojoTest {
      * Integration test of entire plugin
      */
     @Test
-    public void testCompletePlugin()
-            throws Exception
-    {
+    public void testCompletePlugin() throws Exception {
         File pom = new File( "target/test-classes/project-to-test/" );
-        assertNotNull( pom );
-        assertTrue( pom.exists() );
 
-        KnowledgeConverterMojo knowledgeConverterMojo = (KnowledgeConverterMojo) rule.lookupConfiguredMojo( pom, "convert-knowledge" );
+        KnowledgeConverterMojo knowledgeConverterMojo =
+                (KnowledgeConverterMojo) rule.lookupConfiguredMojo(pom, "convert-knowledge");
         assertNotNull(knowledgeConverterMojo);
         knowledgeConverterMojo.execute();
 
-        File inputDirectory = ( File ) rule.getVariableValueFromObject(knowledgeConverterMojo, "inputDirectory" );
-        assertNotNull( inputDirectory );
-        assertTrue( inputDirectory.exists() );
+        File inputDirectory = (File) rule.getVariableValueFromObject(knowledgeConverterMojo, "inputDirectory");
+        assertNotNull(inputDirectory);
+        assertTrue(inputDirectory.exists());
 
-        File outputDirectory = ( File ) rule.getVariableValueFromObject(knowledgeConverterMojo, "outputDirectory" );
-        assertNotNull( outputDirectory );
-        assertTrue( outputDirectory.exists() );
+        File outputDirectory = (File) rule.getVariableValueFromObject(knowledgeConverterMojo, "outputDirectory");
+        assertNotNull(outputDirectory);
+        assertTrue(outputDirectory.exists());
 
         File drlFile = new File( outputDirectory, "GdsSample.drl" );
-        assertTrue( drlFile.exists() );
+        assertTrue(drlFile.exists());
     }
 }
 

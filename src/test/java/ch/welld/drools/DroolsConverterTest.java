@@ -5,19 +5,21 @@ import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import static ch.welld.drools.DroolsConverter.copyKnowledge;
 
 public class DroolsConverterTest {
 
-    private static final String basePath = "target/test-classes/fileutils";
-    private static final File outputDirectory = new File("target/test-classes/fileutils-target");
+    private static final Path basePath = Paths.get("target/test-classes/fileutils");
+    private static final Path outputPath = Paths.get("target/test-classes/fileutils-target");
 
     @Test
     public void testGdstToDrlConversion() {
         try {
-            File sourceFile = new File("target/test-classes/fileutils/innerDirectory/GdsSample2.gdst");
-            File drlFile = copyKnowledge(sourceFile, outputDirectory, basePath, true);
+            File sourceFile = basePath.resolve("innerDirectory/GdsSample2.gdst").toFile();
+            File drlFile = copyKnowledge(sourceFile, outputPath.resolve("innerDirectory"), true);
 
             Assert.assertNotNull(drlFile);
             Assert.assertTrue(drlFile.exists());
@@ -29,8 +31,8 @@ public class DroolsConverterTest {
     @Test
     public void testDrlCopy() {
         try {
-            File sourceFile = new File("target/test-classes/fileutils/innerDirectory/DrlSample.drl");
-            File targetFile = copyKnowledge(sourceFile, outputDirectory, basePath, true);
+            File sourceFile = basePath.resolve("innerDirectory/DrlSample.drl").toFile();
+            File targetFile = copyKnowledge(sourceFile, outputPath.resolve("innerDirectory"), true);
 
             Assert.assertNotNull(targetFile);
             Assert.assertTrue(targetFile.exists());

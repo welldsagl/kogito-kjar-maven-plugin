@@ -1,58 +1,53 @@
 package ch.welld.drools;
 
+import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.util.Arrays;
+import java.nio.file.Path;
 import java.util.List;
-import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 
 public class FileUtils {
 
-    public static void createDirectoryIfNotExists(File directory) {
-        if ( !directory.exists() ) {
+    /**
+     * Creates a directory if it does not exist.
+     *
+     * @param directoryPath the path to which the directory will be created
+     */
+    public static void createDirectoryIfNotExists(Path directoryPath) {
+        File directory = directoryPath.toFile();
+        if (!directory.exists()) {
             directory.mkdirs();
         }
     }
 
-    public static List<File> getAllFilesWithExtension(File directory, List<String> extensions) {
-        return Arrays.stream(Objects.requireNonNull(directory.listFiles()))
-                .flatMap(file -> {
-                    if (file.isFile() && extensions.stream().anyMatch(ext -> file.getName().endsWith(ext))) {
-                        return Stream.of(file);
-                    }
-                    if (file.isDirectory()) {
-                        return getAllFilesWithExtension(file, extensions).stream();
-                    }
-                    return Stream.of();
-                })
-                .collect(Collectors.toList());
+    /**
+     * Finds all files matching the given set of extensions.
+     *
+     * @param directory the directory to search
+     * @param extensions the set of valid extensions
+     * @return a list of file with matching extensions
+     */
+    public static List<Path> findAllFilesWithExtensions(File directory, Set<String> extensions) throws IOException {
+        return Files.walk(directory.toPath())
+            .filter(s -> extensions.stream().anyMatch(ext -> s.toString().endsWith(ext)))
+            .collect(Collectors.toList());
     }
 
-    public static String getRelativePath(String fullPath, String basePath) {
-        return new File(basePath)
-                .toURI()
-                .relativize(
-                    new File(fullPath)
-                        .getParentFile()
-                        .toURI()
-                )
-                .getPath();
-    }
-
-    public static File copyFile(File source, File targetDirectory, boolean overrideFile) {
-        try {
-            File copy = new File(targetDirectory, source.getName());
-            createDirectoryIfNotExists(targetDirectory);
-            Files.copy(source.toPath(), copy.toPath(), overrideFile ? REPLACE_EXISTING : null);
-            return copy;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
+    /**
+     * Copies a source file to the destination path, creating non existing directories along the path.
+     *
+     * @param source the file to copy
+     * @param destinationPath the destination path
+     * @param overwriteFile whether to replace an existing file with the same name
+     * @return the copied file
+     */
+    public static File copyFile(File source, Path destinationPath, boolean overwriteFile) throws IOException {
+        createDirectoryIfNotExists(destinationPath);
+        Files.copy(source.toPath(), destinationPath, overwriteFile ? REPLACE_EXISTING : null);
+        return destinationPath.toFile();
     }
 }
