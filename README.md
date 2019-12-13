@@ -1,10 +1,13 @@
 # Drools knowledge Maven plugin
 
 This plugin can be used to copy and, if necessary, convert the files composing the Drools knowledge.
-By now, we treat
- - `GDST` files: they are translated into `DRL` files (same file name) and copied into the chosen output directory
- - `DRL` files
- 
+
+## Why does this exist?
+
+At the time of writing, [Kogito](https://kogito.kie.org/) does not support loading knowledge from a kjar dependency.
+Furthermore, it is unable of understanding *Guided Decision Table* (`.gdst`) files.
+This plugin provides a workaround by copying files to a Kogito `resources` directory at compile time, and converting
+all `.gdst` files to `.drl` files.
 
 ## How it works
 
@@ -35,11 +38,11 @@ the output directory `target` will preserve the relative position of every file 
             └── birds.drl
 ```
 
-The `gdst-to-drl` conversion happens thanks to the Drools Java API provided by the `drools-workbench-models-guided-dtable` library.
+The `gdst-to-drl` conversion leverages the Drools Java API provided by the `drools-workbench-models-guided-dtable` library.
 
-## Usage
+## Basic usage
 
-In order to activate the knowledge conversion and copy, you have to add the Welld Drools Maven Plugin to the `build/plugins` section
+In order to activate the knowledge conversion and copy, you have to add the plugin to the `build/plugins` section
 of your project's `pom.xml`.
 
 ```xml
@@ -57,22 +60,96 @@ of your project's `pom.xml`.
         <configuration>
           <inputDirectory>./drools</inputDirectory>
           <outputDirectory>./src/main/resources</outputDirectory>
-          <overrideFiles>true</overrideFiles>
+          <overwriteFiles>true</overwriteFiles>
         </configuration>
       </execution>
     </executions>
 </plugin>
 ```
 
+## Parameters
+
 The plugin supports the following parameters:
 
- Parameter       | Type    | Default | Description                                                                   
- --------------- | ------- | ------- | -----------
- inputDirectory  | String  | -       | The directory where drools knowledge files are read from. REQUIRED parameter. 
- outputDirectory | String  | -       | The directory where drools knowledge files are saved. REQUIRED parameter.     
- overrideFiles   | boolean | false   | If true existing files in the output directory will be overridden by the new ones, otherwise old ones will be preserved.
+ Parameter        | Type    | Default | Description                                                                   
+ ---------------- | ------- | ------- | -----------
+ inputDirectory   | String  | -       | The directory where drools knowledge files are read from. REQUIRED parameter. 
+ outputDirectory  | String  | -       | The directory where drools knowledge files are saved. REQUIRED parameter.     
+ overwriteFiles   | boolean | false   | If true existing files in the output directory will be overridden by the new ones, otherwise old ones will be preserved.
+
+## Complete usage example
+
+1. Configure `maven-dependency-plugin` to extract knowledge files from a dependency to a temporary directory;
+2. Configure `welld-drools-maven-plugin` to copy and convert files from the temporary directory;
+3. Use `maven-clean-plugin` to cleanup the copied files in the `clean` phase.
+
+The temporary directory is not deleted, so you may want to add it 
+(together with the output directory) to your `.gitignore`.
+
+```xml
+<build>
+    <plugins>
+        <plugin>
+            <artifactId>maven-clean-plugin</artifactId>
+            <version>3.1.0</version>
+            <configuration>
+              <filesets>
+                <fileset><directory>drools</directory></fileset>
+                <fileset><directory>src/main/resources/drools</directory></fileset>
+              </filesets>
+            </configuration>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-dependency-plugin</artifactId>
+            <version>3.1.1</version>
+            <executions>
+              <execution>
+                <id>unpack</id>
+                <phase>generate-resources</phase>
+                <goals>
+                  <goal>unpack</goal>
+                </goals>
+                <configuration>
+                  <artifactItems>
+                    <artifactItem>
+                      <groupId>ch.welld.schindler.fixture</groupId>
+                      <artifactId>droolsknowledge</artifactId>
+                      <outputDirectory>./drools</outputDirectory>
+                      <includes>**/*.drl,**/*.gdst</includes>
+                    </artifactItem>
+                  </artifactItems>
+                  <overWriteReleases>true</overWriteReleases>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>ch.welld.drools</groupId>
+            <artifactId>welld-drools-maven-plugin</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <executions>
+              <execution>
+                <id>knowledge-conversion</id>
+                <phase>generate-resources</phase>
+                <goals>
+                  <goal>convert-knowledge</goal>
+                </goals>
+                <configuration>
+                  <inputDirectory>./drools</inputDirectory>
+                  <outputDirectory>./src/main/resources/drools</outputDirectory>
+                  <overwriteFiles>true</overwriteFiles>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+    </plugins>
+</build>
+```
+
+## Known limitations
  
-Be careful with input files with same name but different extension because only one of them will be saved into the
-output directory.
+**WARNING:** Be careful with input files with same name but different extension because only one of them will be saved into the
+output directory. We plan to fix this problem eventually.
  
  
