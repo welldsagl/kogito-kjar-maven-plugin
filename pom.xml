@@ -84,18 +84,6 @@
     </dependency>
   </dependencies>
 
-  <distributionManagement>
-    <snapshotRepository>
-      <id>welld-nexus-snapshot</id>
-      <url>https://nexus.welld.io/repository/maven-snapshots/</url>
-    </snapshotRepository>
-
-    <repository>
-      <id>welld-nexus</id>
-      <url>https://nexus.welld.io/repository/maven-releases/</url>
-    </repository>
-  </distributionManagement>
-
   <build>
     <pluginManagement>
       <plugins>
