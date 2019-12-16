@@ -61,12 +61,16 @@ jobs:
         path: .m2/repository/
         key: ${{ github.ref }}
     - name: Run tests
-      run: mvn $MVN_CLI_OPTS surefire:test
+      run: | 
+        mvn $MVN_CLI_OPTS test
+        ls -l
+        ls -l target
     - name: Upload test reports
       uses: actions/upload-artifact@v1
       with:
+        # https://github.com/actions/upload-artifact/issues/11
         name: surefire-reports
-        path: target/surefire-reports/TEST-*.xml
+        path: target/surefire-reports
 
   # TODO: add preview/prerelease/release flavour with <job.if>
   build:
