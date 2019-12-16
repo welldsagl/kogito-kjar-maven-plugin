@@ -1,6 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
@@ -9,9 +7,8 @@
   <artifactId>welld-drools-maven-plugin</artifactId>
   <version>1.0.0</version>
   <packaging>maven-plugin</packaging>
-
   <name>WellD Drools Maven Plugin</name>
-
+  <description>A Maven plugin to use KJARs in Kogito</description>
   <url>https://github.com/welldsagl/drools-gdst-to-drl</url>
 
   <prerequisites>
@@ -24,6 +21,18 @@
     <maven.compiler.target>1.8</maven.compiler.target>
     <maven.version>3.3.9</maven.version>
   </properties>
+
+  <distributionManagement>
+    <snapshotRepository>
+        <id>welld-nexus-snapshot</id>
+        <url>https://nexus.welld.io/repository/maven-snapshots/</url>
+    </snapshotRepository>
+
+    <repository>
+        <id>welld-nexus</id>
+        <url>https://nexus.welld.io/repository/maven-releases/</url>
+    </repository>
+  </distributionManagement>
 
   <dependencies>
     <dependency>
@@ -88,7 +97,7 @@
   </distributionManagement>
 
   <build>
-    <pluginManagement><!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->
+    <pluginManagement>
       <plugins>
         <plugin>
           <artifactId>maven-clean-plugin</artifactId>
@@ -184,44 +193,4 @@
       </plugin>
     </plugins>
   </build>
-
-  <profiles>
-    <profile>
-      <id>run-its</id>
-      <build>
-
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-invoker-plugin</artifactId>
-            <version>3.1.0</version>
-            <configuration>
-              <debug>true</debug>
-              <cloneProjectsTo>${project.build.directory}/it</cloneProjectsTo>
-              <pomIncludes>
-                <pomInclude>*/pom.xml</pomInclude>
-              </pomIncludes>
-              <postBuildHookScript>verify</postBuildHookScript>
-              <localRepositoryPath>${project.build.directory}/local-repo</localRepositoryPath>
-              <settingsFile>src/it/settings.xml</settingsFile>
-              <goals>
-                <goal>clean</goal>
-                <goal>test-compile</goal>
-              </goals>
-            </configuration>
-            <executions>
-              <execution>
-                <id>integration-test</id>
-                <goals>
-                  <goal>install</goal>
-                  <goal>integration-test</goal>
-                  <goal>verify</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-  </profiles>
 </project>
