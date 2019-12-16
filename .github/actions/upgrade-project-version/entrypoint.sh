@@ -1,3 +1,5 @@
+#!/bin/sh -l
+
 function upgrade_project_version() {
     PROJECT_VERSION=$(cat ./pom.xml | grep "<version>" | head -1 | awk -F'>' '{ print $2 }' | sed "s/[<\/version ]//g")
     GITHUB_SHORT_SHA=$(echo ${GITHUB_SHA} | cut -c1-8)
@@ -17,4 +19,5 @@ function upgrade_project_version() {
     cat pom.xml
 }
 
-upgrade_project_version()
+upgrade_project_version
+
