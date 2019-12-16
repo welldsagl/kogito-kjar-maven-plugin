@@ -43,9 +43,16 @@ jobs:
         key: ${{ github.ref }}
     - name: Upgrade project version
       uses: ./.github/actions/upgrade-project-version
-    - name: Check new version
-      run: echo $PROJECT_VERSION
-    
+    - name: Set new version
+      run: mvn $MVN_CLI_OPTS versions:set -DnewVersion=$PROJECT_VERSION -DgenerateBackupPoms=false
+    - name: Build the project
+      run: mvn $MAVEN_CLI_OPTS package -DskipTests
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v1
+      with:
+        name: welld-drools-maven-plugin
+        path: target/welld-drools-maven-plugin-${{ env.PROJECT_VERSION }}.jar
+
 
 
     
