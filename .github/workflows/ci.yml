@@ -1,0 +1,26 @@
+name: CI workflow
+on: push
+
+env:
+  MAVEN_CLI_OPTS: "-s .m2/settings.xml --batch-mode"
+  MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository"
+
+jobs:
+  install:
+    name: install
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Install dependencies
+      id: install
+      with:
+        args: mvn $MVN_CLI_OPTS clean install
+    - name: Cache dependencies
+      uses: actions/cache@v1
+      with:
+        path: .m2/repository/
+        key: ${{ github.ref }}
+
+    
+
+

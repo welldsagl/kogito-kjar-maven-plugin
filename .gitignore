@@ -4,7 +4,7 @@ bin/
 
 # Eclipse, Netbeans and IntelliJ files
 /.*
-!/.gitlab-ci.yml
+!/.github
 !.m2/
 !.gitignore
 /nbproject

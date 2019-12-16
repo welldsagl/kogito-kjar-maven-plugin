@@ -1,3 +1,5 @@
+![Foo](https://github.com/welldsagl/drools-gdst-to-drl/workflows/CI%20workflow/badge.svg)
+
 # Drools knowledge Maven plugin
 
 This plugin can be used to copy and, if necessary, convert the files composing the Drools knowledge.
