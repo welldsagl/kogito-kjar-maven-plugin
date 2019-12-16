@@ -171,7 +171,7 @@ jobs:
       uses: actions/download-artifact@v1
       with:
         name: welld-drools-maven-plugin
-        path: target/welld-drools-maven-plugin-${{ env.PROJECT_VERSION }}.jar
+        path: target/
     - run: ls -l target
     - name: Publish on wellD Nexus
       run: mvn $MAVEN_CLI_OPTS deploy -DskipTests -Ddependency-check.skip=true
