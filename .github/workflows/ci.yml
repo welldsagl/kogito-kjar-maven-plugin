@@ -105,11 +105,13 @@ jobs:
       uses: actions/download-artifact@v1
       with:
         name: surefire-reports
+        path: target/surefire-reports
     - name: Run Sonar scanner
       run: |
         mvn $MVN_CLI_OPTS verify sonar:sonar \
           -Dsonar.host.url=$SONAR_URL \
           -Dsonar.login=$SONAR_TOKEN \
+          -DskipTests \
           -Ddependency-check.skip=true
 
   # TODO: run only on master
@@ -163,10 +165,13 @@ jobs:
         key: ${{ github.ref }}
     - name: Upgrade project version
       uses: ./.github/actions/upgrade-project-version
+    - name: Set new version
+      run: mvn $MVN_CLI_OPTS versions:set -DnewVersion=$PROJECT_VERSION -DgenerateBackupPoms=false
     - name: Download build artifacts
       uses: actions/download-artifact@v1
       with:
         name: welld-drools-maven-plugin
+        path: target/welld-drools-maven-plugin-${{ env.PROJECT_VERSION }}.jar
     - run: ls -l target
     - name: Publish on wellD Nexus
       run: mvn $MAVEN_CLI_OPTS deploy -DskipTests -Ddependency-check.skip=true
