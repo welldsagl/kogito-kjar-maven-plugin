@@ -16,14 +16,14 @@ jobs:
       uses: actions/setup-java@v1
       with:
         java-version: 11
-    - name: Install dependencies
-      id: install
-      run: mvn $MVN_CLI_OPTS clean install
-    - name: Cache dependencies
+    - name: Setup cache
       uses: actions/cache@v1
       with:
         path: .m2/repository/
         key: ${{ github.ref }}
+    - name: Install dependencies
+      id: install
+      run: mvn $MVN_CLI_OPTS clean install
 
     
 
