@@ -44,7 +44,7 @@ jobs:
     - name: Upgrade project version
       uses: ./.github/actions/upgrade-project-version
     - name: Check new version
-      run: cat pom.xml
+      run: echo $PROJECT_VERSION
     
 
 
