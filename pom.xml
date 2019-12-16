@@ -7,7 +7,7 @@
 
   <groupId>ch.welld.drools</groupId>
   <artifactId>welld-drools-maven-plugin</artifactId>
-  <version>1.0-SNAPSHOT</version>
+  <version>1.0.1</version>
   <packaging>maven-plugin</packaging>
 
   <name>WellD Drools Maven Plugin</name>
@@ -74,6 +74,18 @@
       <version>7.30.0.Final</version>
     </dependency>
   </dependencies>
+
+  <distributionManagement>
+    <snapshotRepository>
+      <id>welld-nexus-snapshot</id>
+      <url>https://nexus.welld.io/repository/maven-snapshots/</url>
+    </snapshotRepository>
+
+    <repository>
+      <id>welld-nexus</id>
+      <url>https://nexus.welld.io/repository/maven-releases/</url>
+    </repository>
+  </distributionManagement>
 
   <build>
     <pluginManagement><!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->

@@ -47,7 +47,13 @@ public class FileUtils {
      */
     public static File copyFile(File source, Path destinationPath, boolean overwriteFile) throws IOException {
         createDirectoryIfNotExists(destinationPath);
-        Files.copy(source.toPath(), destinationPath, overwriteFile ? REPLACE_EXISTING : null);
+
+        if (overwriteFile) {
+            Files.copy(source.toPath(), destinationPath, REPLACE_EXISTING);
+        } else {
+            Files.copy(source.toPath(), destinationPath);
+        }
+
         return destinationPath.toFile();
     }
 }
