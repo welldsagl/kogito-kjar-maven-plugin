@@ -1,5 +1,8 @@
-name: CI workflow
-on: push
+name: CI/CD workflow
+on:
+  push:
+    branches:
+    - 'master'
 
 env:
   MAVEN_CLI_OPTS: "-s .m2/settings.xml --batch-mode"
@@ -25,6 +28,14 @@ jobs:
     - name: Install dependencies
       id: install
       run: mvn $MVN_CLI_OPTS clean install
+    - uses: 8398a7/action-slack@v2
+      with:
+        status: ${{ job.status }}
+        author_name: ${{ github.actor }}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+      if: failure()
 
   lint:
     name: lint
@@ -44,6 +55,14 @@ jobs:
         key: ${{ github.ref }}
     - name: Lint code
       run: mvn $MVN_CLI_OPTS checkstyle:checkstyle
+    - uses: 8398a7/action-slack@v2
+      with:
+        status: ${{ job.status }}
+        author_name: ${{ github.actor }}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+      if: failure()
 
   test:
     name: test
@@ -69,6 +88,14 @@ jobs:
         # https://github.com/actions/upload-artifact/issues/11
         name: surefire-reports
         path: target/surefire-reports
+    - uses: 8398a7/action-slack@v2
+      with:
+        status: ${{ job.status }}
+        author_name: ${{ github.actor }}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+      if: failure()
 
   quality:
     name: quality gate
@@ -113,8 +140,15 @@ jobs:
           -Dsonar.login=$SONAR_TOKEN \
           -DskipTests \
           -Ddependency-check.skip=true
+    - uses: 8398a7/action-slack@v2
+      with:
+        status: ${{ job.status }}
+        author_name: ${{ github.actor }}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+      if: failure()
 
-  # TODO: run only on master
   build:
     name: build
     runs-on: ubuntu-latest
@@ -142,8 +176,15 @@ jobs:
       with:
         name: welld-drools-maven-plugin
         path: target/welld-drools-maven-plugin-${{ env.PROJECT_VERSION }}.jar
+    - uses: 8398a7/action-slack@v2
+      with:
+        status: ${{ job.status }}
+        author_name: ${{ github.actor }}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+      if: failure()
 
-  # TODO: run only on master
   publish:
     name: publish
     runs-on: ubuntu-latest
@@ -172,9 +213,25 @@ jobs:
       with:
         name: welld-drools-maven-plugin
         path: target/
-    - run: ls -l target
     - name: Publish on wellD Nexus
       run: mvn $MAVEN_CLI_OPTS deploy -DskipTests -Ddependency-check.skip=true
+    - uses: 8398a7/action-slack@v2
+      with:
+        status: ${{ job.status }}
+        author_name: ${{ github.actor }}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+      if: failure()
+    - uses: 8398a7/action-slack@v2
+      with:
+        status: ${{ job.status }}
+        author_name: ${{ github.actor }}
+        text: Version ${{ env.PROJECT_VERSION }} released on Nexus.
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+      if: success()
 
 
     
