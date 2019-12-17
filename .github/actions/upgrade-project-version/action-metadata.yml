@@ -1,6 +1,0 @@
-# action.yml
-name: Upgrade project version
-description: Upgrade version of a maven project
-runs:
-  using: 'docker'
-  image: 'Dockerfile'

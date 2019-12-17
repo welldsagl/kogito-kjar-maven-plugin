@@ -1,4 +1,4 @@
-name: CI/CD workflow
+name: Master workflow
 on:
   push:
     branches:
@@ -10,9 +10,20 @@ env:
   SONAR_URL: https://sonar.welld.io
 
 jobs:
+  check-version:
+    name: check SNAPSHOT version
+    runs-on: ubuntu-latest
+    steps:
+    - name: Export project version
+      uses: ./.github/actions/export-project-version
+    - name: Check version is SNAPSHOT
+      run: |
+        echo $PROJECT_VERSION | grep -E '^(\d+\.){1,2}(\d(-SNAPSHOT))?$'
+
   install:
     name: install
     runs-on: ubuntu-latest
+    needs: check-version
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
@@ -160,15 +171,13 @@ jobs:
       uses: actions/setup-java@v1
       with:
         java-version: 11
+    - name: Export project version
+      uses: ./.github/actions/export-project-version
     - name: Setup cache
       uses: actions/cache@v1
       with:
         path: .m2/repository/
         key: ${{ github.ref }}
-    - name: Upgrade project version
-      uses: ./.github/actions/upgrade-project-version
-    - name: Set new version
-      run: mvn $MVN_CLI_OPTS versions:set -DnewVersion=$PROJECT_VERSION -DgenerateBackupPoms=false
     - name: Build the project
       run: mvn $MAVEN_CLI_OPTS package -DskipTests
     - name: Upload build artifacts
@@ -185,6 +194,40 @@ jobs:
         SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
       if: failure()
 
+  prerelease:
+    name: prerelease
+    runs-on: ubuntu-latest
+    needs: [build, quality]
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+    - name: Export project version
+      uses: ./.github/actions/export-project-version
+    - name: Download build artifacts
+      uses: actions/download-artifact@v1
+      with:
+        name: welld-drools-maven-plugin
+        path: target/
+    - name: Create prerelease
+      uses: marvinpinto/action-automatic-releases@latest
+      with:
+        repo_token: "${{ secrets.GITHUB_TOKEN }}"
+        automatic_release_tag: "latest"
+        prerelease: true
+        title: Prerelease ${{ env.PROJECT_VERSION }}
+        files: |
+          LICENSE
+          target/*.jar
+    - uses: 8398a7/action-slack@v2
+      with:
+        status: ${{ job.status }}
+        author_name: ${{ github.actor }}
+        text: Prerelease 'latest' created on Github.
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+      if: success()
+
   publish:
     name: publish
     runs-on: ubuntu-latest
@@ -199,15 +242,13 @@ jobs:
       uses: actions/setup-java@v1
       with:
         java-version: 11
+    - name: Export project version
+      uses: ./.github/actions/export-project-version
     - name: Setup cache
       uses: actions/cache@v1
       with:
         path: .m2/repository/
         key: ${{ github.ref }}
-    - name: Upgrade project version
-      uses: ./.github/actions/upgrade-project-version
-    - name: Set new version
-      run: mvn $MVN_CLI_OPTS versions:set -DnewVersion=$PROJECT_VERSION -DgenerateBackupPoms=false
     - name: Download build artifacts
       uses: actions/download-artifact@v1
       with:
