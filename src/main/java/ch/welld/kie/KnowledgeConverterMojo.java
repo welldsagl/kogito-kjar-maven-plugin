@@ -1,7 +1,7 @@
-package ch.welld.drools;
+package ch.welld.kie;
 
-import static ch.welld.drools.FileUtils.createDirectoryIfNotExists;
-import static ch.welld.drools.FileUtils.findAllFilesWithExtensions;
+import static ch.welld.kie.FileUtils.createDirectoryIfNotExists;
+import static ch.welld.kie.FileUtils.findAllFilesWithExtensions;
 
 import java.io.File;
 import java.io.IOException;

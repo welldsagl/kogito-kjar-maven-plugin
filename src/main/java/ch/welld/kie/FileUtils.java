@@ -1,4 +1,4 @@
-package ch.welld.drools;
+package ch.welld.kie;
 
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 

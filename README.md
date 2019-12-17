@@ -1,6 +1,6 @@
 ![Foo](https://github.com/welldsagl/drools-gdst-to-drl/workflows/CI%20workflow/badge.svg)
 
-# Drools knowledge Maven plugin
+# WellD Kogito KJAR Maven plugin
 
 This plugin can be used to copy and, if necessary, convert the files composing the Drools knowledge.
 
@@ -49,9 +49,9 @@ of your project's `pom.xml`.
 
 ```xml
 <plugin>
-    <groupId>ch.welld.drools</groupId>
-    <artifactId>welld-drools-maven-plugin</artifactId>
-    <version>1.0</version>
+    <groupId>ch.welld.kie</groupId>
+    <artifactId>welld-kogito-kjar-maven-plugin</artifactId>
+    <version>1.1.0-SNAPSHOT</version>
     <executions>
       <execution>
         <id>knowledgeconversion</id>
@@ -127,9 +127,9 @@ The temporary directory is not deleted, so you may want to add it
             </executions>
           </plugin>
           <plugin>
-            <groupId>ch.welld.drools</groupId>
-            <artifactId>welld-drools-maven-plugin</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <groupId>ch.welld.kie</groupId>
+            <artifactId>welld-kogito-kjar-maven-plugin</artifactId>
+            <version>1.1.0-SNAPSHOT</version>
             <executions>
               <execution>
                 <id>knowledge-conversion</id>

@@ -3,11 +3,11 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>ch.welld.drools</groupId>
-  <artifactId>welld-drools-maven-plugin</artifactId>
-  <version>1.0.0</version>
+  <groupId>ch.welld.kie</groupId>
+  <artifactId>welld-kogito-kjar-maven-plugin</artifactId>
+  <version>1.1.0-SNAPSHOT</version>
   <packaging>maven-plugin</packaging>
-  <name>WellD Drools Maven Plugin</name>
+  <name>WellD Kogito KJAR Maven Plugin</name>
   <description>A Maven plugin to use KJARs in Kogito</description>
   <url>https://github.com/welldsagl/drools-gdst-to-drl</url>
 

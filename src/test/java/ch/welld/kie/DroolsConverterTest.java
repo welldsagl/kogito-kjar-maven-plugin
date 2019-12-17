@@ -1,4 +1,4 @@
-package ch.welld.drools;
+package ch.welld.kie;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import static ch.welld.drools.DroolsConverter.copyKnowledge;
+import static ch.welld.kie.DroolsConverter.copyKnowledge;
 
 public class DroolsConverterTest {
 
