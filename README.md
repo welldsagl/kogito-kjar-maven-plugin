@@ -1,4 +1,4 @@
-![Foo](https://github.com/welldsagl/drools-gdst-to-drl/workflows/CI%20workflow/badge.svg)
+![CI](https://github.com/welldsagl/drools-gdst-to-drl/workflows/Master%20workflow/badge.svg)
 
 # WellD Kogito KJAR Maven plugin
 
