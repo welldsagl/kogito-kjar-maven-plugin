@@ -1,0 +1,111 @@
+name: release
+on:
+  push:
+    tags:
+    - "v*"
+
+# TODO: check semver
+jobs:
+  check-version:
+    name: check version
+    runs-on: ubuntu-latest
+    steps:
+    - name: Export project version
+      uses: ./.github/actions/export-project-version
+    - name: Check version is semantic
+      run: |
+        echo $PROJECT_VERSION | grep -E '^(\d+\.){1,2}(\d)?$'
+
+  prepare-release:
+    name: Prepare release
+    runs-on: ubuntu-latest
+    needs: check-version
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+    - name: Setup Java 11
+      uses: actions/setup-java@v1
+      with:
+        java-version: 11
+    - name: Export project version
+      uses: ./.github/actions/export-project-version
+    - name: Build the project
+      run: mvn $MAVEN_CLI_OPTS package -DskipTests
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v1
+      with:
+        name: welld-drools-maven-plugin
+        path: target/welld-drools-maven-plugin-${{ env.PROJECT_VERSION }}.jar
+
+  publish:
+    name: publish
+    runs-on: ubuntu-latest
+    needs: [build, quality]
+    env:
+      NEXUS_USER: ${{ secrets.NEXUS_USER }}
+      NEXUS_PWD: ${{ secrets.NEXUS_PWD }}
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+    - name: Setup Java 11
+      uses: actions/setup-java@v1
+      with:
+        java-version: 11
+    - name: Export project version
+      uses: ./.github/actions/export-project-version
+    - name: Download build artifacts
+      uses: actions/download-artifact@v1
+      with:
+        name: welld-drools-maven-plugin
+        path: target/
+    - name: Publish on wellD Nexus
+      run: mvn $MAVEN_CLI_OPTS deploy -DskipTests -Ddependency-check.skip=true
+    - uses: 8398a7/action-slack@v2
+      with:
+        status: ${{ job.status }}
+        author_name: ${{ github.actor }}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+      if: failure()
+    - uses: 8398a7/action-slack@v2
+      with:
+        status: ${{ job.status }}
+        author_name: ${{ github.actor }}
+        text: Version ${{ env.PROJECT_VERSION }} released on Nexus.
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+      if: success()
+
+    
+  release:
+    name: Create Github release
+    runs-on: ubuntu-latest
+    needs: prepare-release
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+    - name: Export project version
+      uses: ./.github/actions/export-project-version
+    - name: Download build artifacts
+      uses: actions/download-artifact@v1
+      with:
+        name: welld-drools-maven-plugin
+        path: target/
+    - uses: "marvinpinto/action-automatic-releases@latest"
+      with:
+        repo_token: "${{ secrets.GITHUB_TOKEN }}"
+        prerelease: false
+        files: |
+          LICENSE.txt
+          target/*.jar
+    - uses: 8398a7/action-slack@v2
+      with:
+        status: ${{ job.status }}
+        author_name: ${{ github.actor }}
+        text: Release ${{ env.PROJECT_VERSION }} created on Github.
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+      if: success()

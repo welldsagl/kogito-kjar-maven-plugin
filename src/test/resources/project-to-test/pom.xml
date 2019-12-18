@@ -4,8 +4,8 @@
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>ch.welld.drools</groupId>
-  <artifactId>welld-drools-maven-plugin-test</artifactId>
+  <groupId>ch.welld.kie</groupId>
+  <artifactId>welld-kogito-kjar-maven-plugin-test</artifactId>
   <version>1.0-SNAPSHOT</version>
   <packaging>jar</packaging>
   <name>Test KnowledgeConverterMojo</name>
@@ -13,8 +13,8 @@
   <build>
     <plugins>
       <plugin>
-        <groupId>ch.welld.drools</groupId>
-        <artifactId>welld-drools-maven-plugin</artifactId>
+        <groupId>ch.welld.kie</groupId>
+        <artifactId>welld-kogito-kjar-maven-plugin</artifactId>
         <configuration>
           <outputDirectory>output</outputDirectory>
           <inputDirectory>./</inputDirectory>

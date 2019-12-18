@@ -1,4 +1,7 @@
-# Drools knowledge Maven plugin
+![Codecov](https://img.shields.io/codecov/c/github/welldsagl/drools-gdst-to-drl?token=a5a71dcc831b476db46988222a05846a)
+![GitHub Workflow Status](https://img.shields.io/github/workflow/status/welldsagl/drools-gdst-to-drl/master)
+
+# WellD Kogito KJAR Maven plugin
 
 This plugin can be used to copy and, if necessary, convert the files composing the Drools knowledge.
 
@@ -47,9 +50,9 @@ of your project's `pom.xml`.
 
 ```xml
 <plugin>
-    <groupId>ch.welld.drools</groupId>
-    <artifactId>welld-drools-maven-plugin</artifactId>
-    <version>1.0</version>
+    <groupId>ch.welld.kie</groupId>
+    <artifactId>welld-kogito-kjar-maven-plugin</artifactId>
+    <version>1.1.0-SNAPSHOT</version>
     <executions>
       <execution>
         <id>knowledgeconversion</id>
@@ -125,9 +128,9 @@ The temporary directory is not deleted, so you may want to add it
             </executions>
           </plugin>
           <plugin>
-            <groupId>ch.welld.drools</groupId>
-            <artifactId>welld-drools-maven-plugin</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <groupId>ch.welld.kie</groupId>
+            <artifactId>welld-kogito-kjar-maven-plugin</artifactId>
+            <version>1.1.0-SNAPSHOT</version>
             <executions>
               <execution>
                 <id>knowledge-conversion</id>

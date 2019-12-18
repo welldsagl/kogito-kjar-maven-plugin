@@ -1,4 +1,4 @@
-package ch.welld.drools;
+package ch.welld.kie;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.maven.plugin.testing.MojoRule;

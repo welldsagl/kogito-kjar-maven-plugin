@@ -1,4 +1,4 @@
-package ch.welld.drools;
+package ch.welld.kie;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static ch.welld.drools.FileUtils.*;
+import static ch.welld.kie.FileUtils.*;
 
 public class FileUtilsTest {
 
