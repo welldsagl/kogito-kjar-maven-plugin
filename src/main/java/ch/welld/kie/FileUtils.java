@@ -9,6 +9,7 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class FileUtils {
 
@@ -32,9 +33,11 @@ public class FileUtils {
      * @return a list of file with matching extensions
      */
     public static List<Path> findAllFilesWithExtensions(File directory, Set<String> extensions) throws IOException {
-        return Files.walk(directory.toPath())
-            .filter(s -> extensions.stream().anyMatch(ext -> s.toString().endsWith(ext)))
-            .collect(Collectors.toList());
+        try(Stream<Path> walk = Files.walk(directory.toPath())) {
+            return walk
+                    .filter(s -> extensions.stream().anyMatch(ext -> s.toString().endsWith(ext)))
+                    .collect(Collectors.toList());
+        }
     }
 
     /**
