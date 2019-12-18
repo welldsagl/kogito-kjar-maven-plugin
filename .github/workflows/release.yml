@@ -4,7 +4,6 @@ on:
     tags:
     - "v*"
 
-# TODO: check semver
 jobs:
   check-version:
     name: check version
@@ -14,7 +13,7 @@ jobs:
       uses: ./.github/actions/export-project-version
     - name: Check version is semantic
       run: |
-        echo $PROJECT_VERSION | grep -E '^(\d+\.){1,2}(\d)?$'
+        echo $PROJECT_VERSION | egrep '^([0-9]+\.){1,2}([0-9])?$'
 
   prepare-release:
     name: Prepare release
@@ -35,7 +34,7 @@ jobs:
       uses: actions/upload-artifact@v1
       with:
         name: welld-drools-maven-plugin
-        path: target/welld-drools-maven-plugin-${{ env.PROJECT_VERSION }}.jar
+        path: target/welld-kogito-kjar-maven-plugin-${{ env.PROJECT_VERSION }}.jar
 
   publish:
     name: publish
@@ -93,7 +92,7 @@ jobs:
       with:
         name: welld-drools-maven-plugin
         path: target/
-    - uses: "marvinpinto/action-automatic-releases@latest"
+    - uses: marvinpinto/action-automatic-releases@latest
       with:
         repo_token: "${{ secrets.GITHUB_TOKEN }}"
         prerelease: false

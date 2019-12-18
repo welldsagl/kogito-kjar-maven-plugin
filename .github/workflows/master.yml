@@ -13,11 +13,13 @@ jobs:
     name: check SNAPSHOT version
     runs-on: ubuntu-latest
     steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
     - name: Export project version
       uses: ./.github/actions/export-project-version
     - name: Check version is SNAPSHOT
       run: |
-        echo $PROJECT_VERSION | grep -E '^(\d+\.){1,2}(\d(-SNAPSHOT))?$'
+        echo $PROJECT_VERSION | egrep '^([0-9]+\.){1,2}([0-9]+(-SNAPSHOT))?$'
 
   install:
     name: install
@@ -182,7 +184,7 @@ jobs:
       uses: actions/upload-artifact@v1
       with:
         name: welld-drools-maven-plugin
-        path: target/welld-drools-maven-plugin-${{ env.PROJECT_VERSION }}.jar
+        path: target/welld-kogito-kjar-maven-plugin-${{ env.PROJECT_VERSION }}.jar
     - uses: 8398a7/action-slack@v2
       with:
         status: ${{ job.status }}
