@@ -1,5 +1,5 @@
-![Codecov](https://img.shields.io/codecov/c/github/welldsagl/drools-gdst-to-drl?token=a5a71dcc831b476db46988222a05846a)
-![GitHub Workflow Status](https://img.shields.io/github/workflow/status/welldsagl/drools-gdst-to-drl/master)
+![Codecov](https://img.shields.io/codecov/c/github/welldsagl/kogito-kjar-maven-plugin?token=a5a71dcc831b476db46988222a05846a)
+![GitHub Workflow Status](https://img.shields.io/github/workflow/status/welldsagl/kogito-kjar-maven-plugin/master)
 
 # WellD Kogito KJAR Maven plugin
 
