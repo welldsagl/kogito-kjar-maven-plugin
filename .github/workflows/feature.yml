@@ -1,4 +1,4 @@
-name: Feature workflow
+name: feature
 on:
   push:
     branches: 
@@ -66,6 +66,15 @@ jobs:
         key: ${{ github.ref }}
     - name: Run tests
       run: mvn $MVN_CLI_OPTS test
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v1
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+        file: target/site/jacoco/jacoco.xml
+        flags: unittests
+        name: jacoco-report
+        yml: ./codecov.yml
+        fail_ci_if_error: true
     - name: Upload test reports
       uses: actions/upload-artifact@v1
       with:

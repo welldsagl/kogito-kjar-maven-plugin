@@ -1,4 +1,5 @@
-![CI](https://github.com/welldsagl/drools-gdst-to-drl/workflows/Master%20workflow/badge.svg)
+![Codecov](https://img.shields.io/codecov/c/github/welldsagl/drools-gdst-to-drl?token=a5a71dcc831b476db46988222a05846a)
+![GitHub Workflow Status](https://img.shields.io/github/workflow/status/welldsagl/drools-gdst-to-drl/master)
 
 # WellD Kogito KJAR Maven plugin
 
