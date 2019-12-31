@@ -43,6 +43,7 @@ jobs:
     env:
       SONATYPE_USER: ${{ secrets.SONATYPE_USER }}
       SONATYPE_PWD: ${{ secrets.SONATYPE_PWD }}
+      GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
@@ -60,7 +61,7 @@ jobs:
     - name: Publish on Maven Central
       run: |
         export GPG_TTY=$(tty)
-        mvn deploy -DskipTests -Ddependency-check.skip=true -DperformRelease=true -Dgpg.passphrase=${{ secrets.GPG_PASSPHRASE }}
+        mvn deploy -DskipTests -Ddependency-check.skip=true -DperformRelease=true
     - uses: 8398a7/action-slack@v2
       with:
         status: ${{ job.status }}
