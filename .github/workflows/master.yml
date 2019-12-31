@@ -236,8 +236,8 @@ jobs:
     runs-on: ubuntu-latest
     needs: [build, quality]
     env:
-      NEXUS_USER: ${{ secrets.NEXUS_USER }}
-      NEXUS_PWD: ${{ secrets.NEXUS_PWD }}
+      SONATYPE_USER: ${{ secrets.SONATYPE_USER }}
+      SONATYPE_PWD: ${{ secrets.SONATYPE_PWD }}
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
@@ -257,7 +257,7 @@ jobs:
       with:
         name: welld-drools-maven-plugin
         path: target/
-    - name: Publish on wellD Nexus
+    - name: Publish on Maven Central
       run: mvn $MAVEN_CLI_OPTS deploy -DskipTests -Ddependency-check.skip=true
     - uses: 8398a7/action-slack@v2
       with:
@@ -271,7 +271,7 @@ jobs:
       with:
         status: ${{ job.status }}
         author_name: ${{ github.actor }}
-        text: Version ${{ env.PROJECT_VERSION }} released on Nexus.
+        text: Version ${{ env.PROJECT_VERSION }} released on Maven Central.
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
