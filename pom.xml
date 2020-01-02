@@ -229,19 +229,6 @@
         </executions>
       </plugin>
 
-
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-release-plugin</artifactId>
-        <version>2.5.3</version>
-        <configuration>
-          <localCheckout>true</localCheckout>
-          <pushChanges>false</pushChanges>
-          <mavenExecutorId>forked-path</mavenExecutorId>
-<!--          <arguments>-Dgpg.passphrase=${gpg.passphrase}</arguments>-->
-        </configuration>
-      </plugin>
-
       <plugin>
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
