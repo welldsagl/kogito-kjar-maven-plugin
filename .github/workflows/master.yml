@@ -238,6 +238,7 @@ jobs:
     env:
       SONATYPE_USER: ${{ secrets.SONATYPE_USER }}
       SONATYPE_PWD: ${{ secrets.SONATYPE_PWD }}
+      GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
