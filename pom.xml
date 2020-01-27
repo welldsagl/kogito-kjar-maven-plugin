@@ -159,6 +159,11 @@
       <artifactId>drools-workbench-models-guided-dtable</artifactId>
       <version>7.30.0.Final</version>
     </dependency>
+    <dependency>
+      <groupId>org.drools</groupId>
+      <artifactId>drools-workbench-models-guided-template</artifactId>
+      <version>7.30.0.Final</version>
+    </dependency>
   </dependencies>
 
   <build>

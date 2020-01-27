@@ -29,6 +29,19 @@ public class DroolsConverterTest {
     }
 
     @Test
+    public void testGuidedTemplateToDrlConversion() {
+        try {
+            File sourceFile = basePath.resolve("innerDirectory/GuidedTemplateSample.template").toFile();
+            File drlFile = copyKnowledge(sourceFile, outputPath.resolve("innerDirectory"), true);
+
+            Assert.assertNotNull(drlFile);
+            Assert.assertTrue(drlFile.exists());
+        } catch (IOException e) {
+            Assert.fail();
+        }
+    }
+
+    @Test
     public void testDrlCopy() {
         try {
             File sourceFile = basePath.resolve("innerDirectory/DrlSample.drl").toFile();

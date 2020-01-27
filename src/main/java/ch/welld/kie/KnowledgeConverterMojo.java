@@ -59,7 +59,7 @@ public class KnowledgeConverterMojo extends AbstractMojo {
         createDirectoryIfNotExists(outputDirectoryPath);
 
         try {
-            List<Path> knowledgeFiles = findAllFilesWithExtensions(inputDirectory, Set.of(".gdst", ".drl"));
+            List<Path> knowledgeFiles = findAllFilesWithExtensions(inputDirectory, Set.of(".gdst", ".drl", ".template"));
             getLog().info("Knowledge files found: " + knowledgeFiles.size());
             knowledgeFiles.forEach(knowledgeFile -> getLog().debug(" - " + knowledgeFile));
 
