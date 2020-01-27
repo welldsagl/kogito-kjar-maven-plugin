@@ -8,15 +8,17 @@ This plugin can be used to copy and, if necessary, convert the files composing t
 ## Why does this exist?
 
 At the time of writing, [Kogito](https://kogito.kie.org/) does not support loading knowledge from a kjar dependency.
-Furthermore, it is unable of understanding *Guided Decision Table* (`.gdst`) files.
+Furthermore, it is unable of understanding *Guided Decision Table* (`.gdst`) files or *Guided Template Rules*
+(`.template`) files.
 This plugin provides a workaround by copying files to a Kogito `resources` directory at compile time, and converting
-all `.gdst` files to `.drl` files.
+all `.gdst` and `.template` files to `.drl` files.
 
 ## How it works
 
 The plugin looks into the chosen input directory (parameter `inputDirectory`) for Drools knowledge files.
 
- - For each `.gdst` file the plugin creates a corresponding drl translation in the chosen output directory (`outputDirectory`).
+ - For each `.gdst` or `.template` file the plugin creates a corresponding drl translation in the 
+ chosen output directory (`outputDirectory`).
  - `.drl` files are simply copied into the output directory.
 
 Folder structure is preserved after the copy, for instance if the input directory is `source` and has the following structure
@@ -119,7 +121,7 @@ The temporary directory is not deleted, so you may want to add it
                       <groupId>ch.welld.schindler.fixture</groupId>
                       <artifactId>droolsknowledge</artifactId>
                       <outputDirectory>./drools</outputDirectory>
-                      <includes>**/*.drl,**/*.gdst</includes>
+                      <includes>**/*.drl,**/*.gdst,,**/*.template</includes>
                     </artifactItem>
                   </artifactItems>
                   <overWriteReleases>true</overWriteReleases>
