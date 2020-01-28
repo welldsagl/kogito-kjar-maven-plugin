@@ -1,7 +1,5 @@
 package ch.welld.kie;
 
-import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
-
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -33,7 +31,7 @@ public class FileUtils {
      * @return a list of file with matching extensions
      */
     public static List<Path> findAllFilesWithExtensions(File directory, Set<String> extensions) throws IOException {
-        try(Stream<Path> walk = Files.walk(directory.toPath())) {
+        try (Stream<Path> walk = Files.walk(directory.toPath())) {
             return walk
                     .filter(s -> extensions.stream().anyMatch(ext -> s.toString().endsWith(ext)))
                     .collect(Collectors.toList());
@@ -41,22 +39,21 @@ public class FileUtils {
     }
 
     /**
-     * Copies a source file to the destination path, creating non existing directories along the path.
+     * Utility function to generate a drl file.
      *
-     * @param source the file to copy
-     * @param destinationPath the destination path
-     * @param overwriteFile whether to replace an existing file with the same name
-     * @return the copied file
+     * @param content the content of the file
+     * @param fileName the name of the file
+     * @param destinationPath the destination path to which the file is written
+     * @param overwriteFile if true, overwrites the existing file
+     * @return the created file
      */
-    public static File copyFile(File source, Path destinationPath, boolean overwriteFile) throws IOException {
+    public static File createFile(String content, String fileName, Path destinationPath, boolean overwriteFile)
+            throws IOException {
         createDirectoryIfNotExists(destinationPath);
-
-        if (overwriteFile) {
-            Files.copy(source.toPath(), destinationPath, REPLACE_EXISTING);
-        } else {
-            Files.copy(source.toPath(), destinationPath);
+        File targetFile = new File(destinationPath.toFile(), fileName);
+        if (overwriteFile || !targetFile.exists()) {
+            Files.write(targetFile.toPath(), content.getBytes());
         }
-
-        return destinationPath.toFile();
+        return targetFile;
     }
 }
