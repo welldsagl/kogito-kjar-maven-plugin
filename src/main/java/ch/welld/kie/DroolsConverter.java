@@ -33,7 +33,7 @@ public class DroolsConverter {
         String extension = sourceFile.getName().substring(sourceFile.getName().lastIndexOf('.'));
         KnowledgeFormatConverter converter = KnowledgeFormatConverterFactory
                 .getConverter(extension)
-                .orElseThrow(() -> new UnsupportedKnowledgeFormatException(sourceFile.toPath()));
+                .orElseThrow(() -> new UnsupportedKnowledgeFormatException(sourceFile));
         String drlString = converter.convertToDrl(sourceFile);
         String fileName = sourceFile.getName().replaceAll(
             String.format("%s$", converter.supportedFormat()),

@@ -51,7 +51,7 @@ public class DroolsConverterTest {
             // This should never be reached
             Assert.fail();
         } catch (UnsupportedKnowledgeFormatException e) {
-            Assert.assertEquals(e.getUnsupportedFilePath(), sourceFile.toPath());
+            Assert.assertEquals(e.getUnsupportedFile().toPath(), sourceFile.toPath());
         } catch (IOException e) {
             Assert.fail();
         }

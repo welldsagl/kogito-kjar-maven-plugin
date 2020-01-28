@@ -1,17 +1,17 @@
 package ch.welld.kie.format;
 
-import java.nio.file.Path;
+import java.io.File;
 
 public class UnsupportedKnowledgeFormatException extends Exception {
 
-    private final Path unsupportedFilePath;
+    private final File unsupportedFile;
 
-    public UnsupportedKnowledgeFormatException(Path unsupportedFilePath) {
+    public UnsupportedKnowledgeFormatException(File unsupportedFile) {
         super();
-        this.unsupportedFilePath = unsupportedFilePath;
+        this.unsupportedFile = unsupportedFile;
     }
 
-    public Path getUnsupportedFilePath() {
-        return unsupportedFilePath;
+    public File getUnsupportedFile() {
+        return unsupportedFile;
     }
 }

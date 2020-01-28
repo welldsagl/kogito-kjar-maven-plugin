@@ -10,6 +10,10 @@ import java.util.stream.Collectors;
  */
 public class KnowledgeFormatConverterFactory {
 
+    private KnowledgeFormatConverterFactory() {
+        // prevent instantiation
+    }
+
     private static List<KnowledgeFormatConverter> converters = List.of(
         new GdstFormatConverter(),
         new TemplateFormatConverter(),
