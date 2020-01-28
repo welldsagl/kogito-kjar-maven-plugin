@@ -30,7 +30,7 @@ public class DroolsConverter {
      */
     public static File convertKnowledgeFile(File sourceFile, Path destinationPath, boolean overwriteFile)
             throws IOException, UnsupportedKnowledgeFormatException {
-        String extension = sourceFile.getName().substring(sourceFile.getName().lastIndexOf("."));
+        String extension = sourceFile.getName().substring(sourceFile.getName().lastIndexOf('.'));
         KnowledgeFormatConverter converter = KnowledgeFormatConverterFactory
                 .getConverter(extension)
                 .orElseThrow(() -> new UnsupportedKnowledgeFormatException(sourceFile.toPath()));
