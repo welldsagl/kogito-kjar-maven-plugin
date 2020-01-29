@@ -152,7 +152,7 @@ jobs:
           -Dsonar.login=$SONAR_TOKEN \
           -Dsonar.organization=welldsagl \
           -Dsonar.projectKey=welldsagl_drools-gdst-to-drl \
-          -DskipTests \
+          -Dsonar.junit.reportPaths=target/surefire-reports \
           -Ddependency-check.skip=true
     - uses: 8398a7/action-slack@v2
       with:
