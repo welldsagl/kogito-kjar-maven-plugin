@@ -3,11 +3,12 @@ package ch.welld.kie;
 import static ch.welld.kie.FileUtils.createDirectoryIfNotExists;
 import static ch.welld.kie.FileUtils.findAllFilesWithExtensions;
 
+import ch.welld.kie.format.UnsupportedKnowledgeFormatException;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
-import java.util.Set;
 
 import org.apache.maven.plugin.AbstractMojo;
 
@@ -16,7 +17,7 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 
 /**
- * Goal which touches a timestamp file.
+ * Goal to convert knowledge files to .drl format
  */
 @Mojo(name = "convert-knowledge", defaultPhase = LifecyclePhase.GENERATE_RESOURCES)
 public class KnowledgeConverterMojo extends AbstractMojo {
@@ -39,12 +40,12 @@ public class KnowledgeConverterMojo extends AbstractMojo {
     private void convertToDrlAndCopy(Path knowledgeFilePath, Path destinationPath, boolean overwriteFiles) {
         try {
             getLog().debug("Copying file " + knowledgeFilePath);
-            DroolsConverter.copyKnowledge(
+            DroolsConverter.convertKnowledgeFile(
                     knowledgeFilePath.toFile(),
                     destinationPath,
                     overwriteFiles
             );
-        } catch (IOException ex) {
+        } catch (IOException | UnsupportedKnowledgeFormatException ex) {
             getLog().error("Cannot convert file " + knowledgeFilePath.toString());
         }
     }
@@ -59,7 +60,10 @@ public class KnowledgeConverterMojo extends AbstractMojo {
         createDirectoryIfNotExists(outputDirectoryPath);
 
         try {
-            List<Path> knowledgeFiles = findAllFilesWithExtensions(inputDirectory, Set.of(".gdst", ".drl"));
+            List<Path> knowledgeFiles = findAllFilesWithExtensions(
+                inputDirectory,
+                DroolsConverter.getSupportedFormats()
+            );
             getLog().info("Knowledge files found: " + knowledgeFiles.size());
             knowledgeFiles.forEach(knowledgeFile -> getLog().debug(" - " + knowledgeFile));
 

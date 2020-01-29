@@ -78,8 +78,11 @@ public class KnowledgeConverterMojoTest {
         assertNotNull(outputDirectory);
         assertTrue(outputDirectory.exists());
 
-        File drlFile = new File( outputDirectory, "GdsSample.drl" );
-        assertTrue(drlFile.exists());
+        File drlFileFromGdst = new File( outputDirectory, "GdsSample.drl" );
+        assertTrue(drlFileFromGdst.exists());
+
+        File drlFileFromGuidedTemplate = new File( outputDirectory, "GuidedTemplateSample.drl" );
+        assertTrue(drlFileFromGuidedTemplate.exists());
     }
 
 //    /**
