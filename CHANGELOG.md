@@ -14,6 +14,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+## [1.2.0] - 30/01/2020
+
+### Added
+- Support for guided rule template files
+
+### Changed
+- Update Quarkus version
+
 ## [1.0.0] - 17/12/2019
 
 ### Added

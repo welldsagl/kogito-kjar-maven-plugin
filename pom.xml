@@ -5,7 +5,7 @@
 
   <groupId>ch.welld.kie</groupId>
   <artifactId>welld-kogito-kjar-maven-plugin</artifactId>
-  <version>1.1.1-SNAPSHOT</version>
+  <version>1.2.0</version>
   <packaging>maven-plugin</packaging>
 
   <name>WellD Kogito KJAR Maven Plugin</name>
@@ -40,7 +40,7 @@
     <connection>
       scm:git:git://github.com/welldsagl/drools-gdst-to-drl
     </connection>
-    <tag>HEAD</tag>
+    <tag>welld-kogito-kjar-maven-plugin-1.2.0</tag>
   </scm>
 
   <developers>
