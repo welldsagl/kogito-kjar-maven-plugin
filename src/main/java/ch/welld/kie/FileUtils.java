@@ -29,6 +29,7 @@ public class FileUtils {
      * @param directory the directory to search
      * @param extensions the set of valid extensions
      * @return a list of file with matching extensions
+     * @throws IOException if an I/O error occurs
      */
     public static List<Path> findAllFilesWithExtensions(File directory, Set<String> extensions) throws IOException {
         try (Stream<Path> walk = Files.walk(directory.toPath())) {
@@ -46,6 +47,7 @@ public class FileUtils {
      * @param destinationPath the destination path to which the file is written
      * @param overwriteFile if true, overwrites the existing file
      * @return the created file
+     * @throws IOException if an I/O error occurs
      */
     public static File createFile(String content, String fileName, Path destinationPath, boolean overwriteFile)
             throws IOException {
