@@ -9,6 +9,8 @@ jobs:
     name: check version
     runs-on: ubuntu-latest
     steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
     - name: Export project version
       uses: ./.github/actions/export-project-version
     - name: Check version is semantic
