@@ -4,6 +4,10 @@ on:
     tags:
     - "v*"
 
+env:
+  MAVEN_CLI_OPTS: "-s .m2/settings.xml --batch-mode"
+  MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository"
+
 jobs:
   check-version:
     name: check version
@@ -63,7 +67,7 @@ jobs:
     - name: Publish on Maven Central
       run: |
         export GPG_TTY=$(tty)
-        mvn deploy -DskipTests -Ddependency-check.skip=true -DperformRelease=true
+        mvn $MVN_CLI_OPTS deploy -DskipTests -Ddependency-check.skip=true -DperformRelease=true
     - uses: 8398a7/action-slack@v2
       with:
         status: ${{ job.status }}
