@@ -26,7 +26,7 @@ public class DroolsConverter {
      * @throws UnsupportedKnowledgeFormatException when trying to convert from an unsupported format to DRL
      *
      *     FIXME: if the knowledge contains both `rules.drl` and `rules.dgst` the behaviour could be non-deterministic
-     *         (depending on which one gets copied first) and the value of {@param overwriteFile}
+     *         (depending on which one gets copied first) and the value of {@code overwriteFile}
      */
     public static File convertKnowledgeFile(File sourceFile, Path destinationPath, boolean overwriteFile)
             throws IOException, UnsupportedKnowledgeFormatException {

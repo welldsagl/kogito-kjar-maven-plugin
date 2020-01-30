@@ -13,6 +13,7 @@ public interface KnowledgeFormatConverter {
      *
      * @param sourceFile the file to convert
      * @return the equivalent rules in DRL format
+     * @throws IOException if an I/O error occurs while reading the file
      */
     String convertToDrl(File sourceFile) throws IOException;
 
