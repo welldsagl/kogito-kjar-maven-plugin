@@ -64,9 +64,11 @@ jobs:
       with:
         name: welld-drools-maven-plugin
         path: target/
+    - name: Set GPG_TTY
+      run: |
+        echo "::set-env name=GPG_TTY::$(tty)"
     - name: Publish on Maven Central
       run: |
-        export GPG_TTY=$(tty)
         mvn $MVN_CLI_OPTS deploy -DskipTests -Ddependency-check.skip=true -DperformRelease=true
     - uses: 8398a7/action-slack@v2
       with:
